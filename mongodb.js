@@ -1,10 +1,16 @@
 // CRUD create read update delete
 
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient; //client that runs db operations
+const { MongoClient, ObjectID } = require('mongodb');
+// const MongoClient = mongodb.MongoClient; //client that runs db operations
 
 const connectionURL = 'mongodb://127.0.0.1:27017';
 const databaseName = 'task-manager';
+
+const id = new ObjectID();
+console.log(id);
+console.log(id.getTimestamp());
+console.log(id.id.length);
+console.log(id.toHexString().length);
 
 MongoClient.connect(
     connectionURL,
@@ -19,6 +25,8 @@ MongoClient.connect(
 
         // db.collection('users').insertOne(
         //     {
+        //         // _id: id,
+        //         // name: 'Vikram',
         //         name: 'Stas',
         //         age: 37,
         //     },
