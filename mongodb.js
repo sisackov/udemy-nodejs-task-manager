@@ -22,6 +22,7 @@ MongoClient.connect(
         // console.log('Connected to database!');
 
         const db = client.db(databaseName);
+        console.log(db);
 
         // db.collection('users').insertOne(
         //     {
@@ -93,14 +94,16 @@ MongoClient.connect(
         //     }
         // );
 
-        db.collection('users')
-            .find({ age: 37 })
-            .toArray((error, users) => {
-                console.log(users);
-            });
+        // db.collection('users')
+        //     .find({ age: 37 }) //returns a cursor object that has many methods(https://mongodb.github.io/node-mongodb-native/3.6/api/Cursor.html)
+        //     // .toArray((error, users) => {
+        //     .toArray((_, users) => {
+        //         //underscore variable means we don't use it
+        //         console.log(users);
+        //     });
 
         // db.collection('tasks').findOne(
-        //     { _id: new ObjectID('5c0fec243ef6bdfbe1d62e2f') },
+        //     { _id: new ObjectId('61e342f39a82af4e34ef99d7') },
         //     (error, task) => {
         //         console.log(task);
         //     }
@@ -110,6 +113,61 @@ MongoClient.connect(
         //     .find({ completed: false })
         //     .toArray((error, tasks) => {
         //         console.log(tasks);
+        //     });
+
+        // db.collection('users')
+        //     .updateOne(
+        //         {
+        //             _id: new ObjectID('61e3425ba526b809c01add9c'),
+        //         },
+        //         {
+        //             $inc: {
+        //                 age: 1,
+        //             },
+        //         }
+        //     )
+        //     .then((result) => {
+        //         console.log(result);
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
+
+        // db.collection('tasks')
+        //     .updateMany(
+        //         {
+        //             completed: false,
+        //         },
+        //         {
+        //             $set: {
+        //                 completed: true,
+        //             },
+        //         }
+        //     )
+        //     .then((result) => {
+        //         console.log(result.modifiedCount);
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
+
+        // db.collection('users').deleteMany({
+        //     age: 27
+        // }).then((result) => {
+        //     console.log(result)
+        // }).catch((error) => {
+        //     console.log(error)
+        // })
+
+        // db.collection('tasks')
+        //     .deleteOne({
+        //         description: 'Clean the house',
+        //     })
+        //     .then((result) => {
+        //         console.log(result);
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
         //     });
     }
 );
