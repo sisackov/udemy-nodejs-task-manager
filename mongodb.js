@@ -7,10 +7,10 @@ const connectionURL = 'mongodb://127.0.0.1:27017';
 const databaseName = 'task-manager';
 
 const id = new ObjectID();
-console.log(id);
-console.log(id.getTimestamp());
-console.log(id.id.length);
-console.log(id.toHexString().length);
+// console.log(id);
+// console.log(id.getTimestamp());
+// console.log(id.id.length);
+// console.log(id.toHexString().length);
 
 MongoClient.connect(
     connectionURL,
@@ -81,5 +81,35 @@ MongoClient.connect(
         //         console.log(result.ops);
         //     }
         // );
+
+        // db.collection('users').findOne(
+        //     { _id: new ObjectID('61e3425ba526b809c01add9b') },
+        //     (error, user) => {
+        //         if (error) {
+        //             return console.log('Unable to fetch');
+        //         }
+
+        //         console.log(user);
+        //     }
+        // );
+
+        db.collection('users')
+            .find({ age: 37 })
+            .toArray((error, users) => {
+                console.log(users);
+            });
+
+        // db.collection('tasks').findOne(
+        //     { _id: new ObjectID('5c0fec243ef6bdfbe1d62e2f') },
+        //     (error, task) => {
+        //         console.log(task);
+        //     }
+        // );
+
+        // db.collection('tasks')
+        //     .find({ completed: false })
+        //     .toArray((error, tasks) => {
+        //         console.log(tasks);
+        //     });
     }
 );
