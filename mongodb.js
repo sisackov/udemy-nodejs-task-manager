@@ -3,8 +3,8 @@
 const { MongoClient, ObjectID } = require('mongodb');
 // const MongoClient = mongodb.MongoClient; //client that runs db operations
 
-const connectionURL = 'mongodb://127.0.0.1:27017';
-const databaseName = 'task-manager';
+const CONNECTION_URL = 'mongodb://127.0.0.1:27017';
+const DATABASE_NAME = 'task-manager';
 
 const id = new ObjectID();
 // console.log(id);
@@ -13,7 +13,7 @@ const id = new ObjectID();
 // console.log(id.toHexString().length);
 
 MongoClient.connect(
-    connectionURL,
+    CONNECTION_URL,
     { useNewUrlParser: true, useUnifiedTopology: true },
     (error, client) => {
         if (error) {
@@ -21,7 +21,7 @@ MongoClient.connect(
         }
         // console.log('Connected to database!');
 
-        const db = client.db(databaseName);
+        const db = client.db(DATABASE_NAME);
         console.log(db);
 
         // db.collection('users').insertOne(
