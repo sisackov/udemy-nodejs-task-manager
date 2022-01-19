@@ -66,6 +66,38 @@ app.get('/users/:id', async (req, res) => {
     //     });
 });
 
+app.patch('/users/:id', async (req, res) => {
+    const _id = req.params.id;
+
+    //below is done because if a field does not exist in the collection, it will not throw an error.
+    //mongodb will just ignore it. this way we can verify if the field is valid and send an error if it is not
+    const updates = Object.keys(req.body);
+    const allowedUpdates = Object.keys(User.schema.paths).filter(
+        (field) => field.startsWith('_') === false
+    ); //this will return an array of all the fields in the schema that are not _id, _v, _c, etc.
+    const isValidOperation = updates.every((update) =>
+        allowedUpdates.includes(update)
+    );
+    if (!isValidOperation) {
+        return res.status(400).send({ error: 'Invalid updates!' });
+    }
+
+    try {
+        const user = await User.findByIdAndUpdate(_id, req.body, {
+            new: true, //this will return the updated user instead of the old one
+            runValidators: true, //this will run the validators on the updated user
+        });
+
+        if (!user) {
+            return res.status(404).send();
+        }
+
+        res.send(user);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
+
 app.post('/tasks', async (req, res) => {
     const task = new Task(req.body);
     try {
@@ -122,6 +154,33 @@ app.get('/tasks/:id', async (req, res) => {
     //     .catch((error) => {
     //         res.status(500).send(error);
     //     });
+});
+
+app.patch('/tasks/:id', async (req, res) => {
+    const _id = req.params.id;
+    const updates = Object.keys(req.body);
+    const updatableFields = Object.keys(Task.schema.paths).filter(
+        (field) => field.startsWith('_') === false
+    );
+    const isValidOperation = updates.every((update) =>
+        updatableFields.includes(update)
+    );
+    if (!isValidOperation) {
+        return res.status(400).send({ error: 'Invalid updates!' });
+    }
+
+    try {
+        const task = await Task.findByIdAndUpdate(_id, req.body, {
+            new: true,
+            runValidators: true,
+        });
+        if (!task) {
+            return res.status(404).send();
+        }
+        res.send(task);
+    } catch (error) {
+        res.status(400).send(error);
+    }
 });
 
 app.listen(port, () => {
