@@ -6,6 +6,15 @@ const auth = require('../middleware/auth');
 const { sendWelcomeEmail, sendCancelationEmail } = require('../emails/account');
 const router = new express.Router();
 
+/**
+ * The order of middleware loading is important: middleware functions that are
+ * loaded first are also executed first.
+ */
+
+/**
+ * List of HTTP headers: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
+ */
+
 router.post('/users', async (req, res) => {
     const user = new User(req.body);
 
@@ -55,6 +64,7 @@ router.post('/users/logoutAll', auth, async (req, res) => {
     }
 });
 
+//gets the data od the logged user
 router.get('/users/me', auth, async (req, res) => {
     res.send(req.user);
 });

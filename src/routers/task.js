@@ -45,7 +45,7 @@ router.get('/tasks', auth, async (req, res) => {
                 },
             },
         ]);
-        //.execPopulate();  exec populate is deprecated in mongoose 6. above is the new way
+        //! .execPopulate();  execPopulate is deprecated in mongoose 6. above is the new way
         res.send(req.user.tasks);
     } catch (err) {
         res.status(500).send(err.message);

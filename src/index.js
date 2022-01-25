@@ -1,6 +1,15 @@
 const app = require('./app');
 const port = process.env.PORT;
 
+// const jwt = require('jsonwebtoken');
+// const token = jwt.sign({ _id: 'abc123' }, 'thisismynewcourse', {
+//     expiresIn: '7 days',
+// });
+// console.log('token', token);
+// // const decoded = jwt.verify('w' + token, 'thisismynewcourse');// throws an error
+// const decoded = jwt.verify('w' + token, 'thisismynewcourse');
+// console.log('decoded', decoded);
+
 app.listen(port, () => {
     console.log('Server is up on port ' + port);
 });

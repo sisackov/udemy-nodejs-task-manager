@@ -44,6 +44,9 @@ const userSchema = new mongoose.Schema(
             },
         },
         tokens: [
+            //each object will have an id property because it is considered a subdocument
+            //tokens is an array to store multiple tokens and allow the user to log in
+            //from multiple devices
             {
                 token: {
                     type: String,
@@ -77,19 +80,38 @@ userSchema.methods.toJSON = function () {
     return userObject;
 };
 
+//methods are available on the instance of the model
 userSchema.methods.generateAuthToken = async function () {
     const user = this;
+    /**
+     * tokens can be temporary or permanent.
+     * to define a temporary token, we need to set the expiresIn property.
+     * sign method arguments:
+     * The first argument is the payload, which is the data we want to encode.
+     * The second argument is the secret key which is just a series of characters.
+     * The third argument is the options.
+     * The options object has a property called expiresIn which tells the token to expire in a certain time.
+     * The token is then returned.
+     * The token has 3 parts: header.payload.signature(separated by a period).
+     * The header and the payload are encoded in base64.
+     * The signature is a hash(algorithm defined in the header)
+     * of the header+payload+secret key from the second argument.
+     * e.g.: HMACSHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), secret)
+     */
     const token = jwt.sign(
         { _id: user._id.toString() },
         process.env.JWT_SECRET
     );
 
+    //concat merges the arrays and returns a new array as opposed
+    //to push which is mutating the original array
     user.tokens = user.tokens.concat({ token });
     await user.save();
 
     return token;
 };
 
+//statics are available on the model(instance not needed)
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email });
 
